@@ -3,19 +3,27 @@ import {
 	BindingTarget,
 	CompositeConstraint,
 	createPlugin,
-	createRangeConstraint,
-	createStepConstraint,
 	InputBindingPlugin,
 	parseRecord,
 } from '@tweakpane/core';
 
 import {PluginController} from './controller.js';
 
+export interface ImageOption {
+	label?: string;
+	thumbnail: string;
+}
+
+export interface ImageOptions {
+	[key: string]: ImageOption;
+}
+
 export interface PluginInputParams extends BaseInputParams {
-	max?: number;
-	min?: number;
-	step?: number;
-	view: 'dots';
+	options: ImageOptions,
+	height?: number;
+	columns?: number;
+	showLabel?: boolean,
+	view: 'thumbnail-grid';
 }
 
 // NOTE: JSDoc comments of `InputBindingPlugin` can be useful to know details about each property
@@ -25,12 +33,12 @@ export interface PluginInputParams extends BaseInputParams {
 // - converts `Ex` into `In` and holds it
 // - P is the type of the parsed parameters
 //
-export const TemplateInputPlugin: InputBindingPlugin<
-	number,
-	number,
+export const PluginThumbnailList: InputBindingPlugin<
+	string,
+	string,
 	PluginInputParams
 > = createPlugin({
-	id: 'input-template',
+	id: 'thumbnail-grid',
 
 	// type: The plugin type.
 	// - 'input': Input binding
@@ -39,7 +47,8 @@ export const TemplateInputPlugin: InputBindingPlugin<
 	type: 'input',
 
 	accept(exValue: unknown, params: Record<string, unknown>) {
-		if (typeof exValue !== 'number') {
+		// Check if the external value is a string (since we're dealing with image keys)
+		if (typeof exValue !== 'string') {
 			// Return null to deny the user input
 			return null;
 		}
@@ -47,13 +56,53 @@ export const TemplateInputPlugin: InputBindingPlugin<
 		// Parse parameters object
 		const result = parseRecord<PluginInputParams>(params, (p) => ({
 			// `view` option may be useful to provide a custom control for primitive values
-			view: p.required.constant('dots'),
+			view: p.required.constant('thumbnail-grid'),
 
-			max: p.optional.number,
-			min: p.optional.number,
-			step: p.optional.number,
+			// Create a custom parser for options that validates the ImageOptions structure
+			options: p.required.custom<ImageOptions>((value) => {
+				if (typeof value !== 'object' || value === null) {
+					return undefined;
+				}
+				
+				const options = value as Record<string, unknown>;
+				const validatedOptions: ImageOptions = {};
+				
+				for (const [key, optionValue] of Object.entries(options)) {
+					if (typeof optionValue !== 'object' || optionValue === null) {
+						return undefined;
+					}
+					
+					const option = optionValue as Record<string, unknown>;
+					
+					// Check that thumbnail exists and is a string
+					if (typeof option.thumbnail !== 'string') {
+						return undefined;
+					}
+					
+					// Label is optional, but if it exists, it should be a string
+					if (option.label !== undefined && typeof option.label !== 'string') {
+						return undefined;
+					}
+					
+					validatedOptions[key] = {
+						thumbnail: option.thumbnail,
+						label: option.label,
+					};
+				}
+				
+				return validatedOptions;
+			}),
+			height: p.optional.number,
+			columns: p.optional.number,
+			showLabel: p.optional.boolean,
 		}));
+		
 		if (!result) {
+			return null;
+		}
+
+		// Check if the initial value exists in the options
+		if (!(exValue in result.options)) {
 			return null;
 		}
 
@@ -66,32 +115,19 @@ export const TemplateInputPlugin: InputBindingPlugin<
 
 	binding: {
 		reader(_args) {
-			return (exValue: unknown): number => {
+			return (exValue: unknown): string => {
 				// Convert an external unknown value into the internal value
-				return typeof exValue === 'number' ? exValue : 0;
+				return typeof exValue === 'string' ? exValue : '';
 			};
 		},
 
-		constraint(args) {
-			// Create a value constraint from the user input
-			const constraints = [];
-			// You can reuse existing functions of the default plugins
-			const cr = createRangeConstraint(args.params);
-			if (cr) {
-				constraints.push(cr);
-			}
-			const cs = createStepConstraint(args.params);
-			if (cs) {
-				constraints.push(cs);
-			}
-			// Use `CompositeConstraint` to combine multiple constraints
-			return new CompositeConstraint(constraints);
+		constraint(_args) {
+			return new CompositeConstraint([]);
 		},
 
 		writer(_args) {
-			return (target: BindingTarget, inValue) => {
-				// Use `target.write()` to write the primitive value to the target,
-				// or `target.writeProperty()` to write a property of the target
+			return (target: BindingTarget, inValue: string) => {
+				// Use `target.write()` to write the primitive value to the target
 				target.write(inValue);
 			};
 		},
@@ -102,6 +138,10 @@ export const TemplateInputPlugin: InputBindingPlugin<
 		return new PluginController(args.document, {
 			value: args.value,
 			viewProps: args.viewProps,
+			options: args.params.options,
+			height: args.params.height,
+			columns: args.params.columns,
+			showLabel: args.params.showLabel,
 		});
 	},
 });

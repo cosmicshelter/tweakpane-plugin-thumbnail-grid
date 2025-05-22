@@ -1,86 +1,45 @@
 # Tweakpane plugin template
 Plugin template of an input binding for [Tweakpane][tweakpane].
 
-
-# For plugin developers
-TODO: Delete this section before publishing your plugin.
-
-
-## Quick start
-- Install dependencies:
-  ```
-  % npm install
-  ```
-- Build source codes and watch changes:
-  ```
-  % npm start
-  ```
-- Open `test/browser.html` to see the result.
-
-
-## File structure
-```
-|- src
-|  |- sass ............ Plugin CSS
-|  |- index.ts ........ Entrypoint
-|  |- plugin.ts ....... Plugin
-|  |- controller.ts ... Controller for the custom view
-|  `- view.ts ......... Custom view
-|- dist ............... Compiled files
-`- test
-   `- browser.html .... Plugin labo
-```
-
-
-## Version compatibility
-
-| Tweakpane | plugin-template |
-| --------- | --------------- |
-| 4.x       | [main](https://github.com/tweakpane/plugin-template/tree/main) |
-| 3.x       | [v3](https://github.com/tweakpane/plugin-template/tree/v3) |
-
-
 # For plugin users
-
 
 ## Installation
 
-
-### Browser
-```html
-<script type="module">
-  import {Pane} as Tweakpane from './tweakpane.min.js';
-  import * as TweakpaneTemplatePlugin from './tweakpane-plugin-template.min.js';
-
-  const pane = new Pane();
-  pane.registerPlugin(TweakpaneTemplatePlugin);
-</script>
+```bash
+npm install tweakpane-plugin-thumbnail-grid
 ```
-
-
-### Package
-```js
-import {Pane} from 'tweakpane';
-import * as TemplatePlugin from 'tweakpane-plugin-template';
-
-const pane = new Pane();
-pane.registerPlugin(TemplatePlugin);
-```
-
 
 ## Usage
+
 ```js
+import { Pane } from 'tweakpane';
+import * as TweakpanePluginThumbnailGrid from 'tweakpane-plugin-thumbnail-grid';
+
 const params = {
-  prop: 3,
+  value: 'image1',
+  images: {
+    image1: { label: 'Image 1', thumbnail: 'https://picsum.photos/id/1/300/300' },
+    image2: { label: 'Image 2', thumbnail: 'https://picsum.photos/id/2/300/300' },
+    image3: { label: 'Image 3', thumbnail: 'https://picsum.photos/id/3/300/300' },
+  }
 };
 
+const pane = new Pane();
+
+// Register plugin
+pane.registerPlugin(TweakpanePluginThumbnailGrid);
+
 // TODO: Update parameters for your plugin
-pane.addInput(params, 'prop', {
-  view: 'dots',
+pane.addBinding(params, 'value', {
+  options: params.images,
+  showLabel: true, // Show the label on top of the thumbnails
+  height: 300, // Max height of the scrollable grid
+  columns: 2, // Grid column amount
+  label: null // Set to null to allow full width grid
+  view: 'thumbnail-grid',
 }).on('change', (ev) => {
   console.log(ev.value);
 });
 ```
-
 
 [tweakpane]: https://github.com/cocopon/tweakpane/

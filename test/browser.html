@@ -7,19 +7,29 @@
 <body>
 	<script type="module">
 		import {Pane} from '../node_modules/tweakpane/dist/tweakpane.min.js';
-		import * as TweakpaneTemplatePlugin from '../dist/tweakpane-plugin-template.js';
+		import * as TweakpanePluginThumbnailGrid from '../dist/tweakpane-plugin-template.js';
 
 		const params = {
-			prop: 3,
+			value: 'image1',
+			images: {
+				image1: { label: 'Image 1', thumbnail: 'https://picsum.photos/id/1/300/300' },
+				image2: { label: 'Image 2', thumbnail: 'https://picsum.photos/id/2/300/300' },
+				image3: { label: 'Image 3', thumbnail: 'https://picsum.photos/id/3/300/300' },
+			}
 		};
 
 		const pane = new Pane();
 		// Register plugin
-		pane.registerPlugin(TweakpaneTemplatePlugin);
+		pane.registerPlugin(TweakpanePluginThumbnailGrid);
 
 		// TODO: Update parameters for your plugin
-		pane.addBinding(params, 'prop', {
-			view: 'dots',
+		pane.addBinding(params, 'value', {
+			options: params.images,
+			showLabel: true,
+			height: 300,
+			columns: 2,
+			view: 'thumbnail-grid',
+			label: null
 		}).on('change', (ev) => {
 			console.log(ev.value);
 		});
