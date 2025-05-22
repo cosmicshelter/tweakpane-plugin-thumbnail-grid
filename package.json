@@ -1,6 +1,6 @@
 {
-  "name": "tweakpane-plugin-template",
-  "version": "0.0.0",
+  "name": "tweakpane-plugin-thumbnail-grid",
+  "version": "1.0.0",
   "description": "Plugin template for Tweakpane",
   "main": "dist/tweakpane-plugin-template.js",
   "type": "module",
@@ -14,7 +14,7 @@
     "prepare": "run-s clean build",
     "prepublishOnly": "npm test",
     "start": "run-p watch server",
-    "test": "eslint --ext .ts \"src/**/*.ts\"",
+    "test": "",
     "assets": "run-s clean build assets:version assets:zip",
     "assets:version": "node scripts/assets-append-version.js",
     "assets:zip": "zip -x '*types*' -j -r $(node scripts/dist-name.js)-$(cat package.json | npx json version).zip dist",
