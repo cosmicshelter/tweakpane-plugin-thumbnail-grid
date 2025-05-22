@@ -38,7 +38,7 @@ pane.addBinding(params, 'value', {
   showLabel: true, // Show the label on top of the thumbnails
   height: 300, // Max height of the scrollable grid
   columns: 2, // Grid column amount
-  label: null // Set to null to allow full width grid
+  label: null, // Set to null to allow full width grid
   view: 'thumbnail-grid',
 }).on('change', (ev) => {
   console.log(ev.value);

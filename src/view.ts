@@ -142,6 +142,7 @@ export class PluginView implements View {
 		const monitor = document.createElement('div');
 		const image = new Image();
 		image.setAttribute('draggable', 'false');
+		image.setAttribute('crossorigin', '*');
 		
 		// Fill content
 		item.dataset.value = key;
