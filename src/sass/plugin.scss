@@ -4,6 +4,9 @@
 // Additional style for the plugin
 .#{tp.$prefix}-tmpv {
 	&_thumbnail-grid {
+		display: flex;
+		flex-direction: column;
+
 		padding: 3px;
 
 		border-radius: calc(var(--bs-br) - 2px);
@@ -23,13 +26,28 @@
 		box-sizing: border-box;
 
 		line-height: 1.8em;
+		white-space: nowrap;
+		
 		background-color: var(--mo-bg);
 		color: var(--mo-fg);
 
 		border-radius: var(--bld-br);
 	}
+
+	&_grid-container {
+		display: grid;
+		grid-template-rows: auto;
+
+		overflow: scroll;
+
+		row-gap: 3px;
+		column-gap: 3px;
+	}
 	
 	&_item {
+		position: relative;
+		width: 100%;
+
 		box-sizing: border-box;
 
 		&.is-active {
@@ -37,7 +55,14 @@
 		}
 	}
 
-	&_button {
+	&_item__button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		position: relative;
+		height: 100%;
+
 		cursor: pointer;
 
 		transition: opacity 0.1s ease-in-out;
@@ -47,15 +72,26 @@
 		}
 	}
 
-	&_monitor {
-		color: var(--in-fg);
+	&_item__monitor {
+		position: absolute;
+		left: 0;
+		bottom: 3px;
 
-		line-height: 1em;
+		width: 100%;
+		padding: 5px;
 
-		white-space: nowrap;
+		box-sizing: border-box;
 
 		overflow: hidden;
 
+		color: var(--in-fg);
+		line-height: 1em;
+		white-space: nowrap;
 		text-overflow: ellipsis;
+	}
+
+	&_item__image {
+		width: 100%;
+		height: auto;
 	}
 }

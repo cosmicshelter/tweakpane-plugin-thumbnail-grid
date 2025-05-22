@@ -53,7 +53,6 @@ export class PluginView implements View {
 
 		config.viewProps.handleDispose(() => {
 			// Called when the view is disposing
-			console.log('TODO: dispose view');
 		});
 	}
 
@@ -81,8 +80,7 @@ export class PluginView implements View {
 		element.classList.add(className('thumbnail-grid'));
 
 		const style = {
-			'display': 'flex',
-			'flex-direction': 'column',
+			
 		}
 		
 		Object.assign(element.style, style);
@@ -95,14 +93,8 @@ export class PluginView implements View {
 		container.classList.add(className('grid-container'));
 
 		const style = {
-			'display': 'grid',
-			'grid-template-rows': 'auto',
 			'grid-template-columns': `repeat(${this.columns_}, 1fr)`,
-			'max-height': `${this.height_}px`,
-			'overflow': 'scroll',
-			'row-gap': '3px',
-			'column-gap': '3px',
-		}
+			'max-height': `${this.height_}px`,		}
 
 		this.element.appendChild(container);
 
@@ -115,11 +107,7 @@ export class PluginView implements View {
 		const monitor = doc.createElement('div');
 		monitor.classList.add(className('main-monitor'));
 
-		const styles = {
-			'width': '100%',
-			'height': '100%',
-			'white-space': 'nowrap',
-		}
+		const styles = {}
 		
 		Object.assign(monitor.style, styles);
 
@@ -142,60 +130,43 @@ export class PluginView implements View {
 
 	private createOption_(doc: Document, key: string, option: ImageOption): HTMLDivElement {
 		const styles = {
-			container: {
-				'position': 'relative',
-				'width': '100%',
-			},
-			button: {
-				'position': 'relative',
-				'height': 'auto',
-			},
-			monitor: {
-				'position': 'absolute',
-				'left': '0',
-				'bottom': '3px',
-				'width': '100%',
-				'padding': '5px 5px',
-				'box-sizing': 'border-box',
-				'overflow': 'hidden',
-			},
-			image: {
-				'width': '100%',
-				'height': 'auto',
-			}
+			item: {},
+			button: {},
+			monitor: {},
+			image: {}
 		}
 
 		// Create elements
-		const container = document.createElement('div');
+		const item = document.createElement('div');
 		const button = document.createElement('div');
 		const monitor = document.createElement('div');
 		const image = new Image();
 		image.setAttribute('draggable', 'false');
 		
 		// Fill content
-		container.dataset.value = key;
+		item.dataset.value = key;
 		image.src = option.thumbnail;
 		monitor.innerHTML = option.label || key;
 		button.setAttribute('title', option.label || key);
 		
 		// Apply style
-		Object.assign(container.style, styles.container);
+		Object.assign(item.style, styles.item);
 		Object.assign(button.style, styles.button);
 		Object.assign(monitor.style, styles.monitor);
 		Object.assign(image.style, styles.image);
 
 		// Apply class names
-		container.classList.add(className('item'));
-		image.classList.add(className('image'));
-		button.classList.add(className('button'));
-		monitor.classList.add(className('monitor'));
+		item.classList.add(className('item'));
+		image.classList.add(className('item__image'));
+		button.classList.add(className('item__button'));
+		monitor.classList.add(className('item__monitor'));
 		
 		// Append elements
 		if (this.showLabel_) button.appendChild(monitor);
 		button.appendChild(image);		
-		container.appendChild(button);
-		this.container.appendChild(container);
+		item.appendChild(button);
+		this.container.appendChild(item);
 
-		return container;
+		return item;
 	}
 }
