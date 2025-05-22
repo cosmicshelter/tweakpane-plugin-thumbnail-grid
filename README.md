@@ -1,5 +1,8 @@
 # Tweakpane plugin template
+
 Plugin template of an input binding for [Tweakpane][tweakpane].
+
+![](https://cosmicshelter.github.io/tweakpane-plugin-thumbnail-list/test/demo.png)
 
 # For plugin users
 

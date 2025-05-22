@@ -2,6 +2,11 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<style>
+		html {
+			background-color: hsl(230, 7%, 10%);
+		}
+	</style>
 	<title></title>
 </head>
 <body>
@@ -12,9 +17,22 @@
 		const params = {
 			value: 'image1',
 			images: {
-				image1: { label: 'Image 1', thumbnail: 'https://picsum.photos/id/1/300/300' },
-				image2: { label: 'Image 2', thumbnail: 'https://picsum.photos/id/2/300/300' },
-				image3: { label: 'Image 3', thumbnail: 'https://picsum.photos/id/3/300/300' },
+				image1: { label: 'Image 1', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image2: { label: 'Image 2', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image3: { label: 'Image 3', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+			},
+			images1: {
+				image1: { label: 'Image 1', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image2: { label: 'Image 2', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image3: { label: 'Image 3', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image4: { label: 'Image 4', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image5: { label: 'Image 5', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image5: { label: 'Image 5', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image6: { label: 'Image 6', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image7: { label: 'Image 7', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image8: { label: 'Image 8', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image9: { label: 'Image 9', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image10: { label: 'Image 10', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
 			}
 		};
 
@@ -25,9 +43,20 @@
 		// TODO: Update parameters for your plugin
 		pane.addBinding(params, 'value', {
 			options: params.images,
-			showLabel: true,
-			height: 300,
+			showLabel: false,
+			height: 200,
 			columns: 2,
+			view: 'thumbnail-grid',
+			label: 'My image'
+		}).on('change', (ev) => {
+			console.log(ev.value);
+		});
+
+		pane.addBinding(params, 'value', {
+			options: params.images1,
+			showLabel: false,
+			height: 200,
+			columns: 3,
 			view: 'thumbnail-grid',
 			label: null
 		}).on('change', (ev) => {
