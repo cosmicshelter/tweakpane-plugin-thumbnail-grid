@@ -1,6 +1,6 @@
 {
   "name": "tweakpane-plugin-thumbnail-grid",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Plugin template for Tweakpane",
   "main": "dist/tweakpane-plugin-thumbnail-grid.js",
   "type": "module",
