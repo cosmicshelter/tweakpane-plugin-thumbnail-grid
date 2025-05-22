@@ -2,7 +2,7 @@
   "name": "tweakpane-plugin-thumbnail-grid",
   "version": "1.0.0",
   "description": "Plugin template for Tweakpane",
-  "main": "dist/tweakpane-plugin-template.js",
+  "main": "dist/tweakpane-plugin-thumbnail-grid.js",
   "type": "module",
   "types": "dist/types/index.d.ts",
   "author": "cocopon",
