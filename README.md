@@ -1,8 +1,8 @@
-# Tweakpane plugin template
+# Tweakpane plugin thumbnail grid
 
-Plugin template of an input binding for [Tweakpane][tweakpane].
+Thumbnail grid select binding plugin for [Tweakpane][tweakpane].
 
-![](https://cosmicshelter.github.io/tweakpane-plugin-thumbnail-list/test/demo.png)
+![](https://cosmicshelter.github.io/tweakpane-plugin-thumbnail-grid/test/demo.png)
 
 # For plugin users
 
