@@ -11,7 +11,7 @@ import {PluginController} from './controller.js';
 
 export interface ImageOption {
 	label?: string;
-	thumbnail: string;
+	thumbnail: string | HTMLCanvasElement;
 }
 
 export interface ImageOptions {
@@ -75,7 +75,7 @@ export const PluginThumbnailList: InputBindingPlugin<
 					const option = optionValue as Record<string, unknown>;
 					
 					// Check that thumbnail exists and is a string
-					if (typeof option.thumbnail !== 'string') {
+					if (typeof option.thumbnail !== 'string' && !(option.thumbnail instanceof HTMLCanvasElement)) {
 						return undefined;
 					}
 					

@@ -94,7 +94,8 @@ export class PluginView implements View {
 
 		const style = {
 			'grid-template-columns': `repeat(${this.columns_}, 1fr)`,
-			'max-height': `${this.height_}px`,		}
+			'max-height': `${this.height_}px`,
+		}
 
 		this.element.appendChild(container);
 
@@ -133,20 +134,16 @@ export class PluginView implements View {
 			item: {},
 			button: {},
 			monitor: {},
-			image: {}
 		}
 
 		// Create elements
 		const item = document.createElement('div');
 		const button = document.createElement('div');
 		const monitor = document.createElement('div');
-		const image = new Image();
-		image.setAttribute('draggable', 'false');
-		image.setAttribute('crossorigin', '*');
+		const image = this.createThumbnail_(key, option);
 		
 		// Fill content
 		item.dataset.value = key;
-		image.src = option.thumbnail;
 		monitor.innerHTML = option.label || key;
 		button.setAttribute('title', option.label || key);
 		
@@ -154,20 +151,44 @@ export class PluginView implements View {
 		Object.assign(item.style, styles.item);
 		Object.assign(button.style, styles.button);
 		Object.assign(monitor.style, styles.monitor);
-		Object.assign(image.style, styles.image);
 
 		// Apply class names
 		item.classList.add(className('item'));
-		image.classList.add(className('item__image'));
 		button.classList.add(className('item__button'));
 		monitor.classList.add(className('item__monitor'));
 		
 		// Append elements
 		if (this.showLabel_) button.appendChild(monitor);
-		button.appendChild(image);		
+		button.appendChild(image);
 		item.appendChild(button);
 		this.container.appendChild(item);
 
 		return item;
+	}
+
+	private createThumbnail_(key: string, option: ImageOption): HTMLImageElement | HTMLCanvasElement {
+		if (typeof option.thumbnail === 'string') {
+			const image = new Image();
+			image.setAttribute('draggable', 'false');
+			image.setAttribute('crossorigin', '*');
+
+			image.src = option.thumbnail;
+	
+			const style = {};
+			Object.assign(image.style, style);
+	
+			image.classList.add(className('item__image'));
+	
+			return image;
+		}  else {
+			const canvas = option.thumbnail;
+
+			const style = {};
+			Object.assign(canvas.style, style);
+
+			canvas.classList.add(className('item__image'));
+
+			return option.thumbnail;
+		}
 	}
 }

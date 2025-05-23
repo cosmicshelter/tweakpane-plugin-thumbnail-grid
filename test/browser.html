@@ -12,12 +12,19 @@
 <body>
 	<script type="module">
 		import {Pane} from '../node_modules/tweakpane/dist/tweakpane.min.js';
-		import * as TweakpanePluginThumbnailGrid from '../dist/tweakpane-plugin-template.js';
+		import * as TweakpanePluginThumbnailGrid from '../dist/tweakpane-plugin-thumbnail-grid.js';
+
+		const canvas = document.createElement('canvas');
+		const context = canvas.getContext('2d');
+		canvas.width = 100;
+		canvas.height = 100;
+		context.fillStyle = 'red';
+		context.fillRect(0, 0, 100, 100);
 
 		const params = {
 			value: 'image1',
 			images: {
-				image1: { label: 'Image 1', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
+				image1: { label: 'Image 1', thumbnail: canvas },
 				image2: { label: 'Image 2', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
 				image3: { label: 'Image 3', thumbnail: `https://picsum.photos/id/${Math.round(Math.random() * 50)}/300/300` },
 			},
